@@ -75,15 +75,6 @@ const UserAuthentication = () => {
               label={submitBtn}
               disabled={isSubmitBtnDisabled}
             />
-            {/* <button
-              type="submit"
-              className={`${
-                isPending ? "bg-gray-300" : "bg-yellow-300"
-              } w-full my-2 py-2 rounded text-white font-bold`}
-              disabled={isPending}
-            >
-              {submitBtn}
-            </button> */}
             {isError && (
               <p className="text-red-600">{error.response.data.error}</p>
             )}
@@ -100,12 +91,6 @@ const UserAuthentication = () => {
               label={isExistingUser ? "Sign up" : "Log in"}
               onClick={toggleAuthentincationMode}
             />
-            {/* <button
-              className="text-yellow-300 font-bold"
-              onClick={toggleAuthentincationMode}
-            >
-              {isExistingUser ? "Sign up" : "Log in"}
-            </button> */}
           </div>
         </div>
       </div>
