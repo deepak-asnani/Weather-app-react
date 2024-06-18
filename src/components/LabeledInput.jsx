@@ -1,6 +1,12 @@
 import React from "react";
 
-const LabeledInput = ({ label, inputId, inputType, placeholder, register }) => {
+const LabeledInput = ({
+  label = "Name",
+  inputId = "name",
+  inputType = "text",
+  placeholder = "Enter your name",
+  register,
+}) => {
   return (
     <div className="my-3">
       <label
