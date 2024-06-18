@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import LabeledInput from "../components/LabeledInput";
-import { labeledInputStoryParameters } from "../helpers";
+import { storyParameters } from "../helpers";
 
 const meta = {
   title: "Components/LabeledInput",
@@ -16,33 +16,33 @@ const meta = {
       control: "text",
       description: "The label for the input field.",
       table: {
-        type: { summary: 'text' },
-        defaultValue: { summary: "Name"},
-      }
+        type: { summary: "text" },
+        defaultValue: { summary: "Name" },
+      },
     },
     inputId: {
       control: "text",
       description: "The unique ID for the input field.",
       table: {
-        type: { summary: 'text' },
-        defaultValue: { summary: "name"},
-      }
+        type: { summary: "text" },
+        defaultValue: { summary: "name" },
+      },
     },
     inputType: {
       control: "text",
       description: "The type of the input field (e.g., text, email, password).",
       table: {
-        type: { summary: 'text' },
-        defaultValue: { summary: "text"},
-      }
+        type: { summary: "text" },
+        defaultValue: { summary: "text" },
+      },
     },
     placeholder: {
       control: "text",
       description: "The placeholder text for the input field.",
       table: {
-        type: { summary: 'text' },
-        defaultValue: { summary: "Enter your name"},
-      }
+        type: { summary: "text" },
+        defaultValue: { summary: "Enter your name" },
+      },
     },
   },
 };
@@ -54,15 +54,14 @@ export const Default = {
     inputType: "text",
     placeholder: "Enter your name",
   },
-  parameters: labeledInputStoryParameters(
+  parameters: storyParameters(
     "This is the default configuration of the LabeledInput component."
   ),
   default: {
-    label: "Name"
-  }
+    label: "Name",
+  },
 };
 
-/** Example for email input */
 export const EmailInput = {
   args: {
     label: "Email",
@@ -70,9 +69,9 @@ export const EmailInput = {
     inputType: "email",
     placeholder: "Enter your email",
   },
+  parameters: storyParameters("Example for email input"),
 };
 
-/** Example for password input */
 export const PasswordInput = {
   args: {
     label: "Password",
@@ -80,6 +79,7 @@ export const PasswordInput = {
     inputType: "password",
     placeholder: "Enter your password",
   },
+  parameters: storyParameters(" Example for password input"),
 };
 
 export default meta;

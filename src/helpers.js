@@ -17,7 +17,7 @@ export const loginUser = async (userData) => {
     return response.data;
 }
 
-export const labeledInputStoryParameters = (desc) => {
+export const storyParameters = (desc) => {
   const parameters = {
     docs: {
       description: {

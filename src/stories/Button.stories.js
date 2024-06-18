@@ -1,6 +1,7 @@
 import { fn } from "@storybook/test";
 import { Button } from "../components/Button";
-import { action } from '@storybook/addon-actions';
+import { action } from "@storybook/addon-actions";
+import { storyParameters } from "../helpers";
 
 const meta = {
   title: "Components/Button",
@@ -43,11 +44,11 @@ export const Solid = {
     textColor: "text-white",
     buttontype: "submit",
     style: "w-[250px] py-2",
-    onClick: action('on-click'),
+    onClick: action("on-click"),
     disabled: false,
   },
+  parameters: storyParameters("This is the Solid variant of Button Component"),
 };
-
 
 export const ghost = {
   args: {
@@ -58,6 +59,7 @@ export const ghost = {
       console.log("clicked");
     },
   },
+  parameters: storyParameters("This is the Ghost variant of Button Component"),
 };
 
 export default meta;
