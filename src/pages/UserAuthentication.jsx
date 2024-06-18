@@ -7,6 +7,7 @@ import { loginUser, registerUser } from "../helpers";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { store } from "../store/store";
+import { Button } from "../components/Button";
 
 const UserAuthentication = () => {
   const [isExistingUser, setIsExistingUser] = useState(false);
@@ -14,9 +15,12 @@ const UserAuthentication = () => {
     return state.authenticateUser;
   });
   const navigate = useNavigate();
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, watch } = useForm();
 
   let submitBtn = "Sign up";
+  const emailInput = watch("email");
+  const passwordInput = watch("password");
+  const isSubmitBtnDisabled = !emailInput || !passwordInput;
 
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: isExistingUser ? loginUser : registerUser,
@@ -61,17 +65,16 @@ const UserAuthentication = () => {
               label="password"
               inputId="password"
               inputType="password"
-              placeholder="Atleast 8 characters"
+              placeholder="Enter your password"
             />
-            <button
+            <Button
+              backgroundColor={isPending ? "bg-gray-300" : "bg-yellow-300"}
+              textColor="text-white"
               type="submit"
-              className={`${
-                isPending ? "bg-gray-300" : "bg-yellow-300"
-              } bg-yellow-300 w-full my-2 py-2 rounded text-white font-bold`}
-              disabled={isPending}
-            >
-              {submitBtn}
-            </button>
+              style={`w-full py-2 rounded `}
+              label={submitBtn}
+              disabled={isSubmitBtnDisabled}
+            />
             {isError && (
               <p className="text-red-600">{error.response.data.error}</p>
             )}
@@ -83,12 +86,11 @@ const UserAuthentication = () => {
                 ? "Don't have an account ?"
                 : "Already have an account ?"}
             </p>
-            <button
-              className="text-yellow-300 font-bold"
+            <Button
+              textColor="text-yellow-300"
+              label={isExistingUser ? "Sign up" : "Log in"}
               onClick={toggleAuthentincationMode}
-            >
-              {isExistingUser ? "Sign up" : "Log in"}
-            </button>
+            />
           </div>
         </div>
       </div>

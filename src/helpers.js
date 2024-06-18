@@ -16,3 +16,14 @@ export const loginUser = async (userData) => {
     const response = await axios.post(url, userData);
     return response.data;
 }
+
+export const storyParameters = (desc) => {
+  const parameters = {
+    docs: {
+      description: {
+        story: desc,
+      },
+    },
+  };
+  return parameters;
+};
