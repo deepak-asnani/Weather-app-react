@@ -36,11 +36,11 @@ const UserAuthentication = () => {
     submitBtn = "Log in";
   }
 
-  const onSignup = (data) => {
+  const onSignUp = (data) => {
     mutate(data);
   };
 
-  const toggleAuthentincationMode = () => {
+  const toggleAuthenticationMode = () => {
     setIsExistingUser(!isExistingUser);
     reset();
   };
@@ -49,7 +49,7 @@ const UserAuthentication = () => {
     <div className="w-full h-[100%] bg-gray-800 flex justify-center items-center">
       <div className="bg-gray-400 p-2 min-w-[300px] w-[60%] max-w-[500px] h-auto rounded">
         <div>
-          <form onSubmit={handleSubmit(onSignup)}>
+          <form onSubmit={handleSubmit(onSignUp)}>
             <h6 className="text-white font-bold text-lg text-center">
               {isExistingUser ? "Login" : "Sign up"}
             </h6>
@@ -89,7 +89,7 @@ const UserAuthentication = () => {
             <Button
               textColor="text-yellow-300"
               label={isExistingUser ? "Sign up" : "Log in"}
-              onClick={toggleAuthentincationMode}
+              onClick={toggleAuthenticationMode}
             />
           </div>
         </div>
