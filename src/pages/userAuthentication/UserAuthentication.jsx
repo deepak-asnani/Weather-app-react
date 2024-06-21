@@ -1,13 +1,13 @@
 /* Sign up and Login Page */
 
 import React, { useState } from "react";
-import LabeledInput from "../components/LabeledInput";
+import LabeledInput from "../../components/LabeledInput";
 import { useForm } from "react-hook-form";
-import { loginUser, registerUser } from "../helpers";
+import { loginUser, registerUser } from "../../helpers";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { store } from "../store/store";
-import { Button } from "../components/Button";
+import { store } from "../../store/store";
+import { Button } from "../../components/Button";
 
 const UserAuthentication = () => {
   const [isExistingUser, setIsExistingUser] = useState(false);
@@ -46,7 +46,7 @@ const UserAuthentication = () => {
   };
 
   return (
-    <div className="w-full h-full bg-gray-800 flex justify-center items-center">
+    <div className="w-full h-[100%] bg-gray-800 flex justify-center items-center">
       <div className="bg-gray-400 p-2 min-w-[300px] w-[60%] max-w-[500px] h-auto rounded">
         <div>
           <form onSubmit={handleSubmit(onSignup)}>
@@ -62,7 +62,7 @@ const UserAuthentication = () => {
             />
             <LabeledInput
               register={register}
-              label="password"
+              label="Password"
               inputId="password"
               inputType="password"
               placeholder="Enter your password"
@@ -70,7 +70,7 @@ const UserAuthentication = () => {
             <Button
               backgroundColor={isPending ? "bg-gray-300" : "bg-yellow-300"}
               textColor="text-white"
-              type="submit"
+              buttonType="submit"
               style={`w-full py-2 rounded `}
               label={submitBtn}
               disabled={isSubmitBtnDisabled}
