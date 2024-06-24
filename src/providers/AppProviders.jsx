@@ -2,7 +2,7 @@ import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import UserAuthentication from "../pages/userAuthentication/UserAuthentication";
 import PrivateRoute from "../components/PrivateRoute";
-import WeatherDetails from "../pages/WeatherDetails";
+import WeatherDetails from "../pages/weatherDetails/WeatherDetails";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const queryClient = new QueryClient();
