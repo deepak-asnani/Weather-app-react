@@ -12,7 +12,7 @@ export const Button = ({
   return (
     <button
       type={buttonType ?? "button"}
-      className={`font-bold ${backgroundColor ? (!disabled ? backgroundColor : "bg-gray-300") : ""} ${textColor && textColor} ${style ?? style} cursor-${disabled ? "not-allowed" : "pointer"}`}
+      className={`font-bold ${disabled ? "cursor-not-allowed" : "cursor-pointer"} ${backgroundColor ? (!disabled ? backgroundColor : "bg-gray-300") : ""} ${textColor && textColor} ${style && style}`}
       onClick={onClick}
       disabled={disabled}
     >

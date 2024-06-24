@@ -1,5 +1,20 @@
+import { storeUserAuthDetails } from "../helpers";
+
 export const userAuthenticationSlice = (set) => ({
   isValidUser: false,
-  authenticateUser: (isUserAuthenticated) =>
-    set((state) => ({ isValidUser: isUserAuthenticated })),
+  userAuthDetails: null,
+  user: null,
+  authenticateUser: ({ isValidUser, id, token }) => {
+    storeUserAuthDetails({ id, token });
+    return set(() => ({
+      isValidUser,
+      userAuthDetails: { id, token },
+    }));
+  },
+
+  updateUserDetails: (userDetails) => {
+    set(() => ({
+      user: userDetails,
+    }));
+  },
 });

@@ -1,34 +1,47 @@
 /* Sign up and Login Page */
 
-import React, { useState } from "react";
-import LabeledInput from "../components/LabeledInput";
+import React, { useState, useEffect } from "react";
+import LabeledInput from "../../components/LabeledInput";
 import { useForm } from "react-hook-form";
-import { loginUser, registerUser } from "../helpers";
+import { loginUser, registerUser } from "../../apiUtils";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
-import { store } from "../store/store";
-import { Button } from "../components/Button";
+import { useNavigate, Navigate } from "react-router-dom";
+import { Button } from "../../components/Button";
+import { getJSONParsedData } from "../../helpers.js";
+import { store } from "../../store/store.js";
 
 const UserAuthentication = () => {
   const [isExistingUser, setIsExistingUser] = useState(false);
+  const navigate = useNavigate();
+  const { register, handleSubmit, reset, watch } = useForm();
   const authenticateUser = store((state) => {
     return state.authenticateUser;
   });
-  const navigate = useNavigate();
-  const { register, handleSubmit, reset, watch } = useForm();
+
+  const [isValidUser, setIsValidUser] = useState(false);
 
   let submitBtn = "Sign up";
+
   const emailInput = watch("email");
   const passwordInput = watch("password");
   const isSubmitBtnDisabled = !emailInput || !passwordInput;
 
+  useEffect(() => {
+    const isValid = getJSONParsedData("userAuth", "token");
+    setIsValidUser(isValid);
+  }, []);
+
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: isExistingUser ? loginUser : registerUser,
     onSuccess: (data) => {
+      authenticateUser({ isValidUser: true, id: data.id, token: data.token });
       navigate("/weather");
-      authenticateUser(true);
     },
   });
+
+  if (isValidUser) {
+    return <Navigate to="/weather" />;
+  }
 
   if (isPending) {
     submitBtn = "Loading...";
@@ -36,20 +49,20 @@ const UserAuthentication = () => {
     submitBtn = "Log in";
   }
 
-  const onSignup = (data) => {
+  const onSignUp = (data) => {
     mutate(data);
   };
 
-  const toggleAuthentincationMode = () => {
+  const toggleAuthenticationMode = () => {
     setIsExistingUser(!isExistingUser);
     reset();
   };
 
   return (
-    <div className="w-full h-full bg-gray-800 flex justify-center items-center">
+    <div className="w-full h-[100%] bg-gray-800 flex justify-center items-center">
       <div className="bg-gray-400 p-2 min-w-[300px] w-[60%] max-w-[500px] h-auto rounded">
         <div>
-          <form onSubmit={handleSubmit(onSignup)}>
+          <form onSubmit={handleSubmit(onSignUp)}>
             <h6 className="text-white font-bold text-lg text-center">
               {isExistingUser ? "Login" : "Sign up"}
             </h6>
@@ -62,7 +75,7 @@ const UserAuthentication = () => {
             />
             <LabeledInput
               register={register}
-              label="password"
+              label="Password"
               inputId="password"
               inputType="password"
               placeholder="Enter your password"
@@ -70,7 +83,7 @@ const UserAuthentication = () => {
             <Button
               backgroundColor={isPending ? "bg-gray-300" : "bg-yellow-300"}
               textColor="text-white"
-              type="submit"
+              buttonType="submit"
               style={`w-full py-2 rounded `}
               label={submitBtn}
               disabled={isSubmitBtnDisabled}
@@ -89,7 +102,7 @@ const UserAuthentication = () => {
             <Button
               textColor="text-yellow-300"
               label={isExistingUser ? "Sign up" : "Log in"}
-              onClick={toggleAuthentincationMode}
+              onClick={toggleAuthenticationMode}
             />
           </div>
         </div>
