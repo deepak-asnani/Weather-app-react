@@ -1,4 +1,12 @@
 import moment from "moment";
+import {
+  FORECAST_API,
+  KELVIN_TO_CELSIUS_VALUE,
+  LOCATION_API,
+  WEATHER_API,
+  WEATHER_API_BASE_URL,
+  WEATHER_API_KEY,
+} from "./constants";
 
 export const storyParameters = (desc) => {
   const parameters = {
@@ -45,5 +53,57 @@ export const getJSONParsedData = (dataKey, dataItem) => {
     console.log(
       `Error parsing JSON data with key ${dataKey} and value ${dataItem}`
     );
+  }
+};
+
+export const getLocationAPIUrl = ({ searchedText, limit = 1 }) => {
+  const locationAPI = `${WEATHER_API_BASE_URL}${LOCATION_API}?q=${searchedText}&limit=${limit}&appid=${WEATHER_API_KEY}`;
+  return locationAPI;
+};
+
+export const getWeatherAPIUrl = ({ latitude, longitude }) => {
+  const weatherAPI = `${WEATHER_API_BASE_URL}${WEATHER_API}?lat=${latitude}&lon=${longitude}&appid=${WEATHER_API_KEY}`;
+  return weatherAPI;
+};
+
+export const getForecastAPIUrl = ({ latitude, longitude, days }) => {
+  const forecastAPI = `${WEATHER_API_BASE_URL}${FORECAST_API}?lat=${latitude}&lon=${longitude}&cnt=${days}&appid=${WEATHER_API_KEY}`;
+  return forecastAPI;
+};
+
+export const convertKelvinToCelsius = (temperature) => {
+  return (temperature - KELVIN_TO_CELSIUS_VALUE).toFixed(2);
+};
+
+export const convertUnixToDateAndTime = (unix) => {
+  const date = new Date(unix * 1000);
+  return { date, time: moment(date.getTime()).format("LT") };
+};
+
+export const getWeatherIcon = (weatherIconCode) => {
+  const icon = `https://openweathermap.org/img/wn/${weatherIconCode}@2x.png`;
+  return icon;
+};
+
+export const getParsedWeatherDetails = (response) => {
+  try {
+    const { weather, wind, sys, main, id } = response;
+    console.log("weather:- ", weather);
+    const weatherDetails = {
+      id,
+      feelsLike: convertKelvinToCelsius(main.feels_like),
+      temperature: convertKelvinToCelsius(main.temp),
+      pressure: main.pressure,
+      humidity: main.humidity,
+      sunrise: convertUnixToDateAndTime(sys.sunrise).time,
+      sunset: convertUnixToDateAndTime(sys.sunset).time,
+      windSpeed: wind.speed,
+      weather: weather[0].main,
+      weatherId: weather[0].id,
+      weatherIcon: getWeatherIcon(weather[0].icon),
+    };
+    return weatherDetails;
+  } catch (error) {
+    console.log("-------Error parsing weather details---------");
   }
 };
