@@ -12,14 +12,26 @@ code {
     monospace;
 } */
 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+*,
+::after,
+::before{
+  @apply m-0 p-0 box-border
+}
+
 body {
-  @apply m-0 font-sans antialiased;
+  @apply font-sans antialiased;
 }
 
 code {
   @apply font-mono;
 }
+
+.text-primary {
+  @apply text-black dark:text-white;
+}
+

@@ -1,23 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import AppProviders from "./providers/AppProviders";
+import { store } from "./store/store";
+import { setThemeInDoc } from "./helpers";
 
 function App() {
+  const theme = store((state) => state.theme);
+  useEffect(() => {
+    setThemeInDoc(theme);
+  }, [theme]);
   return (
-    <div className="text-center">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="h-[100vh]">
+      <AppProviders />
     </div>
   );
 }
