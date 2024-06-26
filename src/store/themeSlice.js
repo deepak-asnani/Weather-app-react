@@ -1,6 +1,9 @@
+import { getJSONParsedData, setThemeInLocalStorage } from "../helpers";
+
 export const themeSlice = (set) => ({
-  theme: "dark",
+  theme: getJSONParsedData("theme") ?? "dark",
   toggleTheme: (theme) => {
+    setThemeInLocalStorage(theme)
     set(() => ({
       theme,
     }));

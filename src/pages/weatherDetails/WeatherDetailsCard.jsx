@@ -12,7 +12,7 @@ import { Triangle } from "react-loader-spinner";
 const WeatherItem = ({ icon, label, value, unit }) => {
   return (
     <div className="flex flex-col items-center gap-1">
-      <img src={icon} alt="weather icon" className="w-8 h-8" />
+      <img src={icon} alt="weather icon" className="w-5 h-5" />
       <p className="text-xs text-white font-bold">{`${value} ${unit}`}</p>
       <p className="text-xs">{label}</p>
     </div>
@@ -23,6 +23,8 @@ const WeatherDetailsCard = () => {
   const cityDetails = store((state) => state.cityDetails);
 
   const { weatherDetails, isLoading } = useFetchWeatherDetails(cityDetails);
+
+  /* Loader */
 
   if (!weatherDetails || isLoading) {
     return (
@@ -40,21 +42,23 @@ const WeatherDetailsCard = () => {
     );
   }
 
+  /* Weather Details Card */
+
   return (
-    <Card customStyles={"md:w-[50%] h-[200px]"}>
-      <div className="flex justify-between text-white rounded-lgp-2 gap-2 p-4">
-        <div className="flex flex-col items-center justify-between">
+    <Card customStyles={"md:w-[50%] h-[100%]"}>
+      <div className="flex max-[460px]:flex-col justify-between text-white rounded-lg p-2 gap-2 h-full">
+        <div className="flex min-[460px]:flex-col items-center justify-between gap-1">
           <div className="flex flex-col">
             <p className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-300 to-slate-500">
               {weatherDetails.temperature}°C
             </p>
             <p className="text-sm text-white">
-              Feels like:{" "}
+              Feels like
               <span className="font-bold">{weatherDetails.feelsLike}°C</span>
             </p>
           </div>
 
-          <div className="flex flex-col text-sm mt-4 gap-3">
+          <div className="flex min-[460px]:flex-col text-sm min-[460px]:mt-4 gap-6 min-[460px]:gap-3">
             <div className="flex items-center gap-2">
               <img src={sunrise} alt="weather icon" className="w-6 h-6" />
               <div>
@@ -71,19 +75,19 @@ const WeatherDetailsCard = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-center items-center h-full">
+        <div className="flex flex-col justify-center items-center h-auto">
           <div>
             <img
               src={weatherDetails.weatherIcon}
               alt="weather icon"
-              className="w-24 h-24r"
+              className="w-36 h-36 object-cover"
             />
           </div>
 
           <p className="text-xl font-bold">{weatherDetails.weather}</p>
         </div>
-        <div className="flex justify-between text-white rounded-lg gap-10">
-          <div className="flex flex-col items-start justify-between gap-4">
+        <div className="flex min-[460px]:justify-between text-white rounded-lg gap-2 min-[460px]:gap-10 mt-6 min-[460px]:mt-0">
+          <div className="flex flex-wrap min-[460px]:flex-col justify-between gap-4 w-full">
             <WeatherItem
               icon={humidity}
               label={"humidity"}
@@ -96,8 +100,6 @@ const WeatherDetailsCard = () => {
               value={weatherDetails.pressure}
               unit={"hPa"}
             />
-          </div>
-          <div className="flex flex-col items-start gap-1">
             <WeatherItem
               icon={wind}
               label={"wind speed"}
@@ -105,6 +107,14 @@ const WeatherDetailsCard = () => {
               unit={"km/h"}
             />
           </div>
+          {/* <div className="flex flex-col  gap-1">
+            <WeatherItem
+              icon={wind}
+              label={"wind speed"}
+              value={weatherDetails.windSpeed}
+              unit={"km/h"}
+            />
+          </div> */}
         </div>
       </div>
     </Card>

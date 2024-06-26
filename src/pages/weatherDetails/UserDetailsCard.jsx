@@ -22,7 +22,7 @@ const UserDetailsCard = () => {
 
   const { currentTime, currentDayAndDate } = getCurrentDayAndTime();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading || !user) return null;
 
   return (
     <Card customStyles={"md:w-[30%]"}>

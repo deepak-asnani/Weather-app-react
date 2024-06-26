@@ -1,25 +1,26 @@
 import { useEffect, useState } from "react";
 import { Switch } from "@headlessui/react";
 import { SunIcon } from "@heroicons/react/24/solid";
-import { useLocalStorage } from "usehooks-ts";
+import { store } from "../store/store";
+import { setThemeInDoc } from "../helpers";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 function ThemeSwitch() {
-  const [theme, setTheme] = useLocalStorage("theme", "light");
+  const theme = store((state) => state.theme);
+
+  const toggleTheme = store((state) => state.toggleTheme);
+
+  const enabled = theme === 'light';
 
   useEffect(() => {
-    document.body.classList.remove("light", "dark");
-    document.body.classList.add(theme);
+    setThemeInDoc(theme);
   }, [theme]);
 
-  const [enabled, setEnabled] = useState(theme === "light");
-
   const handleThemeChange = (enabled) => {
-    setTheme(enabled ? "light" : "dark");
-    setEnabled(enabled);
+    toggleTheme(enabled ? "light" : "dark");
   };
 
   return (
@@ -32,7 +33,6 @@ function ThemeSwitch() {
           "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out"
         )}
       >
-        {/* <span className="sr-only">Use setting</span> */}
         <span
           className={classNames(
             enabled ? "translate-x-5" : "translate-x-0",

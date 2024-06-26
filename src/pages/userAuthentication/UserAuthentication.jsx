@@ -26,6 +26,7 @@ const UserAuthentication = () => {
   const passwordInput = watch("password");
   const isSubmitBtnDisabled = !emailInput || !passwordInput;
 
+
   useEffect(() => {
     const isValid = getJSONParsedData("userAuth", "token");
     setIsValidUser(isValid);

@@ -48,7 +48,7 @@ export const storeUserAuthDetails = (userAuthDetails) => {
 export const getJSONParsedData = (dataKey, dataItem) => {
   try {
     const data = JSON.parse(localStorage.getItem(dataKey));
-    return data[dataItem];
+    return  dataItem ? data[dataItem] : data;
   } catch (error) {
     console.log(
       `Error parsing JSON data with key ${dataKey} and value ${dataItem}`
@@ -88,7 +88,6 @@ export const getWeatherIcon = (weatherIconCode) => {
 export const getParsedWeatherDetails = (response) => {
   try {
     const { weather, wind, sys, main, id } = response;
-    console.log("weather:- ", weather);
     const weatherDetails = {
       id,
       feelsLike: convertKelvinToCelsius(main.feels_like),
@@ -106,4 +105,13 @@ export const getParsedWeatherDetails = (response) => {
   } catch (error) {
     console.log("-------Error parsing weather details---------");
   }
+};
+
+export const setThemeInLocalStorage = (selectedTheme) => {
+  localStorage.setItem("theme", selectedTheme);
+};
+
+export const setThemeInDoc = (theme) => {
+  document.body.classList.remove("light", "dark");
+  document.body.classList.add(theme);
 };
