@@ -1,20 +1,13 @@
-// import { createBrowserRouter, RouterProvider } from "react-router-dom";
-// import UserAuthentication from "./pages/userAuthentication/UserAuthentication";
-// import PrivateRoute from "./components/PrivateRoute";
-// import WeatherDetails from "./pages/WeatherDetails";
+import { useEffect } from "react";
 import AppProviders from "./providers/AppProviders";
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <UserAuthentication />,
-//   },
-//   {
-//     path: "/weather",
-//     element: <PrivateRoute component={WeatherDetails} />,
-//   },
-// ]);
+import { store } from "./store/store";
+import { setThemeInDoc } from "./helpers";
 
 function App() {
+  const theme = store((state) => state.theme);
+  useEffect(() => {
+    setThemeInDoc(theme);
+  }, [theme]);
   return (
     <div className="h-[100vh]">
       <AppProviders />

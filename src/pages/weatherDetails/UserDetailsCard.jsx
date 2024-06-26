@@ -13,9 +13,7 @@ const UserDetailsCard = () => {
 
   const {
     isLoading,
-    isError,
     data: user,
-    error,
   } = useQuery({
     queryKey: ["userDetails", userId],
     queryFn: fetchUserDetails,
@@ -24,11 +22,11 @@ const UserDetailsCard = () => {
 
   const { currentTime, currentDayAndDate } = getCurrentDayAndTime();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading || !user) return null;
 
   return (
-    <Card>
-      <div className="flex justify-center items-center flex-col gap-10">
+    <Card customStyles={"md:w-[30%]"}>
+      <div className="flex justify-center items-center flex-col gap-10 h-full p-4">
         <p className="text-white font-bold text-lg">{user.name}</p>
         <div className="text-center">
           <p className="text-white text-4xl font-extrabold">{currentTime}</p>
@@ -39,4 +37,4 @@ const UserDetailsCard = () => {
   );
 };
 
-export default UserDetailsCard;
+export default React.memo(UserDetailsCard);

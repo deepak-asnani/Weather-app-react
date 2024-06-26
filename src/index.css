@@ -12,6 +12,7 @@ code {
     monospace;
 } */
 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -29,3 +30,8 @@ body {
 code {
   @apply font-mono;
 }
+
+.text-primary {
+  @apply text-black dark:text-white;
+}
+

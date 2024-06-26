@@ -26,6 +26,7 @@ const UserAuthentication = () => {
   const passwordInput = watch("password");
   const isSubmitBtnDisabled = !emailInput || !passwordInput;
 
+
   useEffect(() => {
     const isValid = getJSONParsedData("userAuth", "token");
     setIsValidUser(isValid);
@@ -59,7 +60,7 @@ const UserAuthentication = () => {
   };
 
   return (
-    <div className="w-full h-[100%] bg-gray-800 flex justify-center items-center">
+    <div className="w-full h-[100%] bg-white dark:bg-gray-800 flex justify-center items-center">
       <div className="bg-gray-400 p-2 min-w-[300px] w-[60%] max-w-[500px] h-auto rounded">
         <div>
           <form onSubmit={handleSubmit(onSignUp)}>

@@ -1,67 +1,112 @@
-import React, { useState, useCallback } from "react";
-import Switch from "react-switch";
+import React, { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button";
 import _ from "lodash";
+import { useFetchSearchResults } from "./weatherQueries";
+import { store } from "../../store/store";
+import ThemeSwitch from "../../components/ThemeSwitch";
 
 const WeatherHeader = () => {
   const [searchText, setSearchText] = useState("");
-  const [isChecked, setIsChecked] = useState(true);
+  const [cityName, setCityName] = useState("");
   const navigate = useNavigate();
+  const updateCityDetails = store((state) => {
+    return state.updateCityDetails;
+  });
 
+  
   const debouncedSearch = useCallback(
     _.debounce((searchTerm) => {
-      console.log("Searching for:", searchTerm);
-    }, 500),
+      setCityName(searchTerm);
+    }, 400),
     []
   );
+
+  useEffect(() => {
+    const fetchCurrentLocation = async () => {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const {
+          coords: { latitude, longitude },
+        } = position;
+        updateCityDetails({
+          lat: latitude,
+          lon: longitude,
+        });
+      });
+    };
+    if (!searchText.length) {
+      fetchCurrentLocation();
+    }
+  }, []);
+
+  const { searchedCities, isLoading, isError } =
+    useFetchSearchResults(cityName);
 
   const handleSearchInputChange = (e) => {
     const { value } = e.target;
     setSearchText(value);
     debouncedSearch(value);
   };
-  
-  const handleChange = () => {
-    setIsChecked(!isChecked);
-  };
 
   const onLogout = () => {
     localStorage.removeItem("userAuth");
     navigate("/");
+  };
+
+  const handleResultClick = (cityDetails) => {
+    console.log("city details:- ", cityDetails);
+    setSearchText("");
+    updateCityDetails(cityDetails);
   };
   return (
     <div className="flex justify-between items-center mb-8 gap-4">
       <div className="flex items-center gap-3 w-full">
         {/*  Theme Toggle Starts */}
         <div className="min-w-[75px]">
-          <Switch
-            onChange={handleChange}
-            checked={isChecked}
-            height={20}
-            width={60}
-            checkedIcon={false}
-            uncheckedIcon={false}
-            onHandleColor="#fff"
-            offHandleColor="#000"
-            offColor="#fff"
-            onColor="#232b2b"
-          />
-          <p className="text-white font-bold text-xs w-full">Dark Mode</p>
+          <ThemeSwitch />
         </div>
 
         {/*  Theme Toggle Ends */}
 
-        {/*  Search Bar Starts */}
+        {/*  Search Component Starts */}
 
-        <input
-          value={searchText}
-          onChange={handleSearchInputChange}
-          className="rounded-full h-10 w-full md:w-[50%] bg-[#373636] border-gray-400 outline-none p-3 caret-white text-white"
-          placeholder="Search for your preferred city..."
-        ></input>
+        <div className="w-full md:w-[50%]">
+          {/*  Search Bar Starts */}
 
-        {/*  Search Bar Ends */}
+          <input
+            value={searchText}
+            onChange={handleSearchInputChange}
+            className="rounded-full h-10 w-full bg-[#373636] border-gray-400 outline-none p-3 caret-white text-white relative"
+            placeholder="Search for your preferred city..."
+          ></input>
+
+          {/*  Search Bar Ends */}
+
+          {/* Search Results Starts */}
+
+          {searchedCities?.length &&
+          !isLoading &&
+          !isError &&
+          searchText.length ? (
+            <div className="absolute mt-1 w-[42%] bg-white shadow-lg rounded-md z-10">
+              {searchedCities.map((city) => (
+                <div
+                  key={`${city.country}-${city.name}-${city.lat}`}
+                  onClick={() => handleResultClick(city)}
+                  className="p-2 hover:bg-gray-200 cursor-pointer rounded-md"
+                >
+                  {`${city.name} (${city.country})`}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <></>
+          )}
+
+          {/* Search Results Ends */}
+        </div>
+
+        {/*  Search Component Ends */}
       </div>
       <Button
         backgroundColor={"bg-green-600"}

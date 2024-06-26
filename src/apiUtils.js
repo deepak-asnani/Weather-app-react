@@ -5,7 +5,13 @@ import {
   LOGIN_API,
   REGISTER_USER_API,
 } from "./constants";
-import { getParsedUserDetails } from "./helpers";
+import {
+  getLocationAPIUrl,
+  getParsedUserDetails,
+  getParsedWeatherDetails,
+  getWeatherAPIUrl,
+  getForecastAPIUrl,
+} from "./helpers";
 
 /* Register API Call For New Users */
 
@@ -33,5 +39,37 @@ export const fetchUserDetails = async ({ queryKey }) => {
   return parsedUserDetails;
 };
 
-
 /*  Fetch Location Details */
+
+export const fetchLocationDetails = async ({ queryKey }) => {
+  const searchedText = queryKey[1];
+  const url = getLocationAPIUrl({ searchedText, limit: 5 });
+  const response = await axios.get(url);
+  return response.data;
+};
+
+/* Fetch Weather Details */
+
+export const fetchWeatherDetails = async ({ queryKey }) => {
+  const selectedCityDetails = queryKey[1];
+  const url = getWeatherAPIUrl({
+    latitude: selectedCityDetails.lat,
+    longitude: selectedCityDetails.lon,
+  });
+  const response = await axios.get(url);
+  return getParsedWeatherDetails(response.data);
+};
+
+/* Fetch Weather Forecast Details */
+
+export const fetchWeatherForecastDetails = async ({ queryKey }) => {
+  const selectedCityDetails = queryKey[1];
+  const url = getForecastAPIUrl({
+    latitude: selectedCityDetails.lat,
+    longitude: selectedCityDetails.lon,
+    days: 5,
+  });
+  const response = await axios.get(url);
+  console.log("response:- ", response);
+  return response;
+};
