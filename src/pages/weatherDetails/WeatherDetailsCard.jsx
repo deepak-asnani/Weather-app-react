@@ -22,7 +22,17 @@ const WeatherItem = ({ icon, label, value, unit }) => {
 const WeatherDetailsCard = () => {
   const cityDetails = store((state) => state.cityDetails);
 
-  const { weatherDetails, isLoading } = useFetchWeatherDetails(cityDetails);
+  const { weatherDetails, isLoading, weatherError, isError } =
+    useFetchWeatherDetails(cityDetails);
+
+  if (isError && weatherError?.message)
+    return (
+      <Card customStyles={"bg-red-500"}>
+        <p className="text-white p-2 flex justify-center items-center">
+          {weatherError.message}
+        </p>
+      </Card>
+    );
 
   /* Loader */
 
@@ -53,7 +63,7 @@ const WeatherDetailsCard = () => {
               {weatherDetails.temperature}°C
             </p>
             <p className="text-sm text-white">
-              Feels like
+              Feels like:{" "}
               <span className="font-bold">{weatherDetails.feelsLike}°C</span>
             </p>
           </div>

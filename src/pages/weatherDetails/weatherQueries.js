@@ -20,13 +20,14 @@ export const useFetchWeatherDetails = (selectedCityDetails) => {
     isLoading,
     data: weatherDetails,
     error: weatherError,
+    isError
   } = useQuery({
     queryKey: ["weatherDetails", selectedCityDetails],
     queryFn: fetchWeatherDetails,
     enabled: !!selectedCityDetails,
   });
 
-  return { weatherDetails, weatherError, isLoading };
+  return { weatherDetails, weatherError, isLoading, isError };
 };
 
 export const useFetchWeatherForecastDetails = (selectedCityDetails) => {
