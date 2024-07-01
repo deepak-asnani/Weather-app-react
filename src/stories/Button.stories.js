@@ -23,7 +23,7 @@ const meta = {
       control: "color",
       description: "text color of a button",
     },
-    buttontype: {
+    buttonType: {
       control: { type: "select" },
       options: ["button", "submit"],
       description: "Describes the type of the button",
@@ -42,7 +42,7 @@ export const Solid = {
     label: "Sign up",
     backgroundColor: "bg-yellow-300",
     textColor: "text-white",
-    buttontype: "submit",
+    buttonType: "submit",
     style: "w-[250px] py-2",
     onClick: action("on-click"),
     disabled: false,
@@ -50,7 +50,7 @@ export const Solid = {
   parameters: storyParameters("This is the Solid variant of Button Component"),
 };
 
-export const ghost = {
+export const Ghost = {
   args: {
     label: "Log in",
     textColor: "text-yellow-300",

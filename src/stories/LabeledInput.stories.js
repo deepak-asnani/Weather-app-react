@@ -6,11 +6,7 @@ import { storyParameters } from "../helpers";
 const meta = {
   title: "Components/LabeledInput",
   tags: ["autodocs"],
-  component: (args) => {
-    const methods = useForm();
-    return <LabeledInput {...args} register={methods.register} />;
-  },
-  LabeledInput,
+  component: LabeledInput,
   argTypes: {
     label: {
       control: "text",
@@ -47,39 +43,43 @@ const meta = {
   },
 };
 
-export const Default = {
-  args: {
-    label: "Name",
-    inputId: "name",
-    inputType: "text",
-    placeholder: "Enter your name",
-  },
-  parameters: storyParameters(
-    "This is the default configuration of the LabeledInput component."
-  ),
-  default: {
-    label: "Name",
-  },
-};
-
-export const EmailInput = {
-  args: {
-    label: "Email",
-    inputId: "email",
-    inputType: "email",
-    placeholder: "Enter your email",
-  },
-  parameters: storyParameters("Example for email input"),
-};
-
-export const PasswordInput = {
-  args: {
-    label: "Password",
-    inputId: "password",
-    inputType: "password",
-    placeholder: "Enter your password",
-  },
-  parameters: storyParameters(" Example for password input"),
-};
-
 export default meta;
+
+const Template = (args) => {
+  const methods = useForm();
+  return <LabeledInput {...args} register={methods.register} />;
+};
+
+export const Default = Template.bind({});
+
+Default.args = {
+  label: "Name",
+  inputId: "name",
+  inputType: "text",
+  placeholder: "Enter your name",
+};
+Default.parameters = storyParameters(
+  "This is the default configuration of the LabeledInput component."
+);
+Default.default = {
+  label: "Name",
+};
+
+export const EmailInput = Template.bind({});
+EmailInput.args = {
+  label: "Email",
+  inputId: "email",
+  inputType: "email",
+  placeholder: "Enter your email",
+};
+EmailInput.parameters = storyParameters("Example for email input");
+
+export const PasswordInput = Template.bind({});
+
+PasswordInput.args = {
+  label: "Password",
+  inputId: "password",
+  inputType: "password",
+  placeholder: "Enter your password",
+};
+PasswordInput.parameters = storyParameters(" Example for password input");
