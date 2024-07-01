@@ -5,6 +5,7 @@ import _ from "lodash";
 import { useFetchSearchResults } from "./weatherQueries";
 import { store } from "../../store/store";
 import ThemeSwitch from "../../components/ThemeSwitch";
+import ROUTES from "../../Routes/AppRoutes";
 
 const WeatherHeader = () => {
   const [searchText, setSearchText] = useState("");
@@ -39,8 +40,7 @@ const WeatherHeader = () => {
     }
   }, []);
 
-  const { searchedCities, isSuccess } =
-    useFetchSearchResults(cityName);
+  const { searchedCities, isSuccess } = useFetchSearchResults(cityName);
   useEffect(() => {
     if (isSuccess) {
       setIsSuggestionBoxOpen(true);
@@ -55,7 +55,7 @@ const WeatherHeader = () => {
 
   const onLogout = () => {
     localStorage.removeItem("userAuth");
-    navigate("/");
+    navigate(ROUTES.AUTH_PAGE);
   };
 
   const handleResultClick = (cityDetails) => {

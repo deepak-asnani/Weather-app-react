@@ -4,6 +4,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { getJSONParsedData } from "../helpers.js";
 import { store } from "../store/store.js";
+import ROUTES from "../Routes/AppRoutes.js";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const isValidUser =
@@ -12,7 +13,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     }) || getJSONParsedData("userAuth", "token");
 
   if (!isValidUser) {
-    return <Navigate to="/" />;
+    return <Navigate to={ROUTES.AUTH_PAGE} />;
   }
 
   return <Component {...rest} />;

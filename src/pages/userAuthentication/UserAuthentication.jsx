@@ -9,14 +9,24 @@ import { useNavigate, Navigate } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { getJSONParsedData } from "../../helpers.js";
 import { store } from "../../store/store.js";
+import ROUTES from "../../Routes/AppRoutes.js";
 
 const UserAuthentication = () => {
   const [isExistingUser, setIsExistingUser] = useState(false);
   const navigate = useNavigate();
-  const { register, handleSubmit, reset, watch } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    getValues,
+    formState: { errors },
+  } = useForm();
   const authenticateUser = store((state) => {
     return state.authenticateUser;
   });
+
+  console.log("errors:- ", errors);
 
   const [isValidUser, setIsValidUser] = useState(false);
 
@@ -25,7 +35,6 @@ const UserAuthentication = () => {
   const emailInput = watch("email");
   const passwordInput = watch("password");
   const isSubmitBtnDisabled = !emailInput || !passwordInput;
-
 
   useEffect(() => {
     const isValid = getJSONParsedData("userAuth", "token");
@@ -36,12 +45,12 @@ const UserAuthentication = () => {
     mutationFn: isExistingUser ? loginUser : registerUser,
     onSuccess: (data) => {
       authenticateUser({ isValidUser: true, id: data.id, token: data.token });
-      navigate("/weather");
+      navigate(ROUTES.WEATHER_DETAILS);
     },
   });
 
   if (isValidUser) {
-    return <Navigate to="/weather" />;
+    return <Navigate to={ROUTES.WEATHER_DETAILS} />;
   }
 
   if (isPending) {
@@ -81,6 +90,20 @@ const UserAuthentication = () => {
               inputType="password"
               placeholder="Enter your password"
             />
+            {!isExistingUser ? (
+              <LabeledInput
+                register={register}
+                getValues={getValues}
+                label="Confirm Password"
+                inputId="confirmPassword"
+                inputType="password"
+                placeholder="Confirm password"
+                errors={errors}
+              />
+            ) : (
+              <></>
+            )}
+
             <Button
               backgroundColor={isPending ? "bg-gray-300" : "bg-yellow-300"}
               textColor="text-white"
