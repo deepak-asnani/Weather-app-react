@@ -9,12 +9,12 @@ import ThemeSwitch from "../../components/ThemeSwitch";
 const WeatherHeader = () => {
   const [searchText, setSearchText] = useState("");
   const [cityName, setCityName] = useState("");
+  const [isSuggestionBoxOpen, setIsSuggestionBoxOpen] = useState(false);
   const navigate = useNavigate();
   const updateCityDetails = store((state) => {
     return state.updateCityDetails;
   });
 
-  
   const debouncedSearch = useCallback(
     _.debounce((searchTerm) => {
       setCityName(searchTerm);
@@ -39,8 +39,13 @@ const WeatherHeader = () => {
     }
   }, []);
 
-  const { searchedCities, isLoading, isError } =
+  const { searchedCities, isSuccess } =
     useFetchSearchResults(cityName);
+  useEffect(() => {
+    if (isSuccess) {
+      setIsSuggestionBoxOpen(true);
+    }
+  }, [isSuccess]);
 
   const handleSearchInputChange = (e) => {
     const { value } = e.target;
@@ -54,8 +59,7 @@ const WeatherHeader = () => {
   };
 
   const handleResultClick = (cityDetails) => {
-    console.log("city details:- ", cityDetails);
-    setSearchText("");
+    setIsSuggestionBoxOpen(false);
     updateCityDetails(cityDetails);
   };
   return (
@@ -84,10 +88,7 @@ const WeatherHeader = () => {
 
           {/* Search Results Starts */}
 
-          {searchedCities?.length &&
-          !isLoading &&
-          !isError &&
-          searchText.length ? (
+          {searchedCities?.length && isSuggestionBoxOpen ? (
             <div className="absolute mt-1 w-[42%] bg-white shadow-lg rounded-md z-10">
               {searchedCities.map((city) => (
                 <div

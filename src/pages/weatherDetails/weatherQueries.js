@@ -6,13 +6,13 @@ import {
 } from "../../apiUtils";
 
 export const useFetchSearchResults = (searchedText) => {
-  const { data: searchedCities, error: searchedError } = useQuery({
+  const { data: searchedCities, error: searchedError, isSuccess } = useQuery({
     queryKey: ["locationDetails", searchedText],
     queryFn: fetchLocationDetails,
     enabled: !!searchedText,
   });
 
-  return { searchedCities, searchedError };
+  return { searchedCities, searchedError, isSuccess };
 };
 
 export const useFetchWeatherDetails = (selectedCityDetails) => {
@@ -20,7 +20,7 @@ export const useFetchWeatherDetails = (selectedCityDetails) => {
     isLoading,
     data: weatherDetails,
     error: weatherError,
-    isError
+    isError,
   } = useQuery({
     queryKey: ["weatherDetails", selectedCityDetails],
     queryFn: fetchWeatherDetails,
